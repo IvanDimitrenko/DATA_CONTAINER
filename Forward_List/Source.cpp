@@ -1,8 +1,45 @@
  #include"Forward_list.h"
+using namespace Forward_List;
 
+
+/*
+TODO:
+В класс ForwardList добавить:
+1. Деструктор;
+2. Конструктор копирования;
+3. Оператор присваивания;
+4. Оператор +, который будет конкатенировать списки;
+5. MoveMethods;
+6. Конструктор на заданное число элементов ForwardList list(5), элементы должны быть заполнены нулями;
+7. Оператор [];
+8. ForwardList list{3, 5, 8, 13, 21}; for(int i=0; i<list.size; i++)cout << list[i] << tab;cout << endl;
+*/
 void main()
 {
-	size_t n;
+
+
+	int n = 10;
+	ForwardList <std::string>lst;
+	for (int i = 0; i < n; i++)
+	{
+		lst[i] = "a" + i;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		cout << "lst[" << i << "] = " << lst[i] << endl;
+	}
+	
+
+
+
+
+
+
+
+
+
+
+	/*size_t n;
 	cout << "Input size >> ";
 	cin >> n;
 	int value;
@@ -44,6 +81,6 @@ void main()
 		case 'q': return;
 		}
 
-	} while (true);
+	} while (true);*/
 
 }

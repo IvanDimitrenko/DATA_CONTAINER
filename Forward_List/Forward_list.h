@@ -9,102 +9,172 @@ using std::cin;
 namespace Forward_List
 {
 
-	//#define PRINT
+	#define PRINT
 
-	template<typename T>
-	class Element
+template<typename T>  class Element
 	{
 	private:
 		T Data;
 		Element* pNext;
 	public:
+
+
+
 		Element(T Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 		{
 #ifdef PRINT
-			cout << "DefEConstructor >> \t" << this << endl;
+			cout << "E_Constructor >> \t" << this << endl;
 #endif//PRINT
 		}
+
+
 		Element(Element* pNext = nullptr)
 		{
 #ifdef PRINT
-			cout << "EConstructor >> \t" << this << endl;
+			cout << "E_DefConstructor >> \t" << this << endl;
 #endif//PRINT
 		}
+
+
+		Element(const Element& other)
+		{
+			this->Data = other.Data;
+			this->pNext = nullptr;
+			
+
+#ifdef PRINT
+			cout << "E_CopyConstructor >> \t" << this << endl;
+#endif//PRINT
+		}
+
+
+
+
 		~Element()
 		{
+
 #ifdef PRINT
-			cout << "EDestructor >> \t" << this << endl;
+			cout << "E_Destructor >> \t" << this << endl;
 #endif//PRINT
 		}
 
-		Element operator=()
+
+
+		/*Element operator=()
 		{
 
 
 #ifdef PRINT
-			cout << "Copy Assigment >> \t" << this << endl;
+			cout << "CopyEAssigment >> \t" << this << endl;
 #endif//PRINT
-		}
+		}*/
+
 		template<typename T>
 		friend class ForwardList;
 	};
-	template<typename T>
-	class ForwardList
+
+
+template<typename T>class ForwardList
 	{
 
 	private:
+
 		Element<T>* Head;
 		size_t SIZE = 0;
 
 	public:
+
 		ForwardList()
 		{
 			this->Head = nullptr;
+
+
+
 #ifdef PRINT
-			cout << "DefLConstructor >> \t" << this << endl;
+			cout << "L_DefConstructor >> \t" << this << endl;
 #endif//PRINT
 		}
+
+
+
 		ForwardList(size_t size)
 		{
+
 			this->Head = nullptr;
+
 			for (size_t i = 0; i < size; i++)
 			{
 				push_front(NULL);
 			}
+
+
 #ifdef PRINT
-			cout << "LConstructor >> \t" << this << endl;
-#endif//PRINT
-		}
-		ForwardList(size_t size, T Data)
-		{
-			this->Head = nullptr;
-			for (size_t i = 0; i < size; i++)
-			{
-				push_front(Data);
-			}
-#ifdef PRINT
-			cout << "LConstructor >> \t" << this << endl;
+			cout << "L_SizeConstructor >> \t" << this << endl;
 #endif//PRINT
 		}
 
+
+
+		ForwardList(std::initializer_list<T> list)
+		{
+
+			this->Head = nullptr;
+			
+			{
+				push_front(Data);
+			}
+
+#ifdef PRINT
+			cout << "L_DataConstructor >> \t" << this << endl;
+#endif//PRINT
+		}
+
+
+
+		ForwardList(const ForwardList& other)
+		{
+			this->Head = nullptr;
+	
+			Element<T>* Iterator = other.Head;
+
+			for (size_t i = 0; i < other.SIZE; i++, Iterator = Iterator->pNext)
+			{
+				push_back(Iterator->Data);
+			}
+
+
+#ifdef PRINT
+			cout << "L_CopyConstructor >> \t" << this << endl;
+#endif//PRINT
+		}
+
+		
 		~ForwardList()
 		{
 			clear();
 
+
 #ifdef PRINT
-			cout << "LDestructor >> \t" << this << endl;
+			cout << "L_Destructor >> \t" << this << endl;
 #endif//PRINT
 		}
+
+
 
 		void push_front(T Data = NULL)
 		{
 			Head = new Element<T>(Data, Head);
 			this->SIZE++;
 		}
+
+
+
 		void push_back(T Data = NULL)
 		{
 			insert(SIZE, Data);
 		}
+
+
 		void clear()
 		{
 			while (SIZE)
@@ -112,27 +182,33 @@ namespace Forward_List
 				pop_front();
 			}
 		}
+
+
+
 		void erase(size_t index)
 		{
-			if (index > SIZE || SIZE == 0)return;
+			if (index >= SIZE || SIZE == 0 /*!Head*/)return;
 			else if (index == 0)
 			{
-				pop_front();
-				return;
+				pop_front(); return;
 			}
 
 			Element<T>* Iterator = this->Head;
-			for (size_t i = 0; i < index - 1; i++)
+			for (size_t i = 0; i < index - 1; i++/*,Iterator = Iterator->pNext*/)
 			{
 				Iterator = Iterator->pNext;
 			}
 			Element<T>* To_Delete = Iterator->pNext;
 
-			Iterator->pNext = To_Delete->pNext;
-
+			Iterator->pNext = Iterator->pNext->pNext;
+           //Iterator->pNext = To_Delete->pNext;
 			delete To_Delete;
 			SIZE--;
 		}
+
+
+
+
 		void insert(size_t index, T Data)
 		{
 			if (index > SIZE)
@@ -147,11 +223,14 @@ namespace Forward_List
 			for (size_t i = 0; i < index - 1; i++)
 			{
 				Iterator = Iterator->pNext;
-			}
-			Element<T>* New = new Element<T>(Data, Iterator->pNext);
+		 	}
+		    Element<T>* New = new Element<T>(Data, Iterator->pNext);
 			Iterator->pNext = New;
 			SIZE++;
 		}
+
+
+
 		void pop_front()
 		{
 			if (!Head) { return; }
@@ -160,11 +239,19 @@ namespace Forward_List
 			delete Iterator;
 			SIZE--;
 		}
+
+
+
+
 		void pop_back()
 		{
 			erase(SIZE - 1);
 		}
-		void print()
+
+
+
+
+		void print()const
 		{
 			cout << endl;
 			size_t i = 0;
@@ -174,7 +261,10 @@ namespace Forward_List
 			}
 			cout << endl << "Size >> " << SIZE << endl;
 		}
-		void set_element(size_t index, T Data)
+
+
+
+		/*void set_element(size_t index, T Data)
 		{
 			if (SIZE == 0 || index > SIZE)return;
 
@@ -184,11 +274,25 @@ namespace Forward_List
 				Iterator = Iterator->pNext;
 			}
 			Iterator->Data = Data;
-		}
+		}*/
+
+
 		T& operator[](size_t index)
 		{
-			size_t i = 0;
+				
+				if (SIZE == 0 || index > SIZE)
+				{
+					// I don't know if I can do this
+					T value = NULL;
+
+					cout << "undefined value";
+
+					return value;
+				}
+	
+
 			Element<T>* Node = Head;
+			size_t i = 0;
 			while (Node)
 			{
 				if (i == index)
@@ -198,7 +302,16 @@ namespace Forward_List
 				Node = Node->pNext; i++;
 			}
 		}
-	};
 
+
+
+};
+
+
+template<typename T>std::ostream& operator <<(std::ostream& os, const ForwardList<T>& other)
+{
+	other.print();
+	return os;
+}
 
 }

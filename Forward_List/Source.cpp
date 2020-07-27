@@ -1,44 +1,58 @@
  #include"Forward_list.h"
 using namespace Forward_List;
-
+#include<vector>
+#include<forward_list>
 
 /*
 TODO:
-В класс ForwardList добавить:
-1. Деструктор;
-2. Конструктор копирования;
-3. Оператор присваивания;
-4. Оператор +, который будет конкатенировать списки;
+Add to the ForwardList class:
+1. Destructor;
+2. Copy constructor;
+3. The assignment operator;
+4. Operator +, which will concatenate lists;
 5. MoveMethods;
-6. Конструктор на заданное число элементов ForwardList list(5), элементы должны быть заполнены нулями;
-7. Оператор [];
-8. ForwardList list{3, 5, 8, 13, 21}; for(int i=0; i<list.size; i++)cout << list[i] << tab;cout << endl;
+6. Constructor for a given number of elements ForwardList list (5), elements must be filled with zeros;
+7. Operator [];
+8. ForwardList list {3, 5, 8, 13, 21}; for (int i = 0; i <list.size; i ++) cout << list [i] << tab; cout << endl;
+DONE vse, krome erase:
+1.pop_front - removes the starting element;
+2. pop_back - removes the last item;
+3. insert - inserts the value at the index;
+4. erase - deletes the value by index;
 */
+
 void main()
 {
 
-
+/*
 	int n = 10;
-	ForwardList <std::string>lst;
+
+	ForwardList <char>lst(n);
+
 	for (int i = 0; i < n; i++)
 	{
-		lst[i] = "a" + i;
+		lst[i] = i + '0' - 'a';
 	}
+
 	for (int i = 0; i < n; i++)
 	{
 		cout << "lst[" << i << "] = " << lst[i] << endl;
 	}
 	
 
+	ForwardList<char>copy(lst);
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << "copy[" << i << "] = " << copy[i] << endl;
+	}
+*/
+ 
+	ForwardList<int>ctr = {1,2,1,1};
 
 
 
-
-
-
-
-
-
+	
 	/*size_t n;
 	cout << "Input size >> ";
 	cin >> n;
@@ -67,7 +81,6 @@ void main()
 		{
 			cout << "\nEneter index >> "; cin >> index;
 		}
-
 		switch (choise)
 		{
 		case '1': list.push_back(value); break;
@@ -77,10 +90,11 @@ void main()
 		case '5': list.insert(index, value); break;
 		case '6': list.erase(index); break;
 		case '7': list.clear(); break;
-		case '8': list.set_element(index, value); break;
+		case '8': list[index] = value; break;
 		case 'q': return;
 		}
 
 	} while (true);*/
 
+	
 }

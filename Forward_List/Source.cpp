@@ -1,7 +1,6 @@
  #include"Forward_list.h"
 using namespace Forward_List;
-#include<vector>
-#include<forward_list>
+
 
 /*
 

@@ -6,60 +6,85 @@ using namespace Forward_List;
 /*
 TODO:
 Add to the ForwardList class:
+
+
+4. Operator +, which will concatenate lists;
+5. MoveMethods;
+
+
+
+Done:
 1. Destructor;
 2. Copy constructor;
 3. The assignment operator;
-4. Operator +, which will concatenate lists;
-5. MoveMethods;
-6. Constructor for a given number of elements ForwardList list (5), elements must be filled with zeros;
-7. Operator [];
-8. ForwardList list {3, 5, 8, 13, 21}; for (int i = 0; i <list.size; i ++) cout << list [i] << tab; cout << endl;
-DONE vse, krome erase:
-1.pop_front - removes the starting element;
-2. pop_back - removes the last item;
-3. insert - inserts the value at the index;
-4. erase - deletes the value by index;
+4. pop_front - removes the starting element;
+5. pop_back - removes the last item;
+6. insert - inserts the value at the index;
+7. erase - deletes the value by index;
+8. Operator [];
+9. ForwardList list {3, 5, 8, 13, 21}; for (int i = 0; i <list.size; i ++) cout << list [i] << tab; cout << endl;
+10. Constructor for a given number of elements ForwardList list (5), elements must be filled with zeros;
+
+
 */
 
 void main()
 {
 
-/*
-	int n = 10;
+	/*
+		int n = 10;
 
-	ForwardList <char>lst(n);
+		ForwardList <char>lst(n);
 
-	for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; i++)
+		{
+			lst[i] = i + '0' - 'a';
+		}
+
+		for (int i = 0; i < n; i++)
+		{
+			cout << "lst[" << i << "] = " << lst[i] << endl;
+		}
+
+
+		ForwardList<char>copy(lst);
+
+		for (int i = 0; i < n; i++)
+		{
+			cout << "copy[" << i << "] = " << copy[i] << endl;
+		}
+	*/
+
+	//	ForwardList<const char*>str = {"Hello","World","!"};
+		//cout << str;
+	ForwardList<int>ctr = { 1 };
+	//cout << ctr;
+//	cout << "\n---------------------------------------\n";
+	ForwardList<int> copy_ctr;
+	copy_ctr = ctr;
+	cout << copy_ctr;
+
+	ForwardList<const char*> copy_move = ForwardList<const char*>(10);
+	cout << copy_move;
+	/*	for (size_t i = 0 ;   i < copy_move.get)
 	{
-		lst[i] = i + '0' - 'a';
-	}
 
-	for (int i = 0; i < n; i++)
-	{
-		cout << "lst[" << i << "] = " << lst[i] << endl;
-	}
+	}*/
 	
 
-	ForwardList<char>copy(lst);
+	/*
+	size_t n;
 
-	for (int i = 0; i < n; i++)
-	{
-		cout << "copy[" << i << "] = " << copy[i] << endl;
-	}
-*/
- 
-	ForwardList<int>ctr = {1,2,1,1};
-
-
-
-	
-	/*size_t n;
 	cout << "Input size >> ";
+
 	cin >> n;
+
 	int value;
-	size_t index = 5;
+	size_t index;
 	char choise;
+
 	ForwardList<int> list;
+
 	for (size_t i = 0; i < n; i++)
 	{
 		list.push_front(rand() % 30 + 5);
@@ -94,7 +119,7 @@ void main()
 		case 'q': return;
 		}
 
-	} while (true);*/
+	} while (true);
 
-	
+	*/
 }

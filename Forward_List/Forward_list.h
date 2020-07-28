@@ -19,7 +19,6 @@ template<typename T>  class Element
 	public:
 
 
-
 		Element(T Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 		{
 #ifdef PRINT
@@ -36,7 +35,7 @@ template<typename T>  class Element
 		}
 
 
-		Element(const Element& other)
+	/*	Element(const Element& other)
 		{
 			this->Data = other.Data;
 			this->pNext = nullptr;
@@ -45,9 +44,7 @@ template<typename T>  class Element
 #ifdef PRINT
 			cout << "E_CopyConstructor >> \t" << this << endl;
 #endif//PRINT
-		}
-
-
+		}*/
 
 
 		~Element()
@@ -59,15 +56,6 @@ template<typename T>  class Element
 		}
 
 
-
-		/*Element operator=()
-		{
-
-
-#ifdef PRINT
-			cout << "CopyEAssigment >> \t" << this << endl;
-#endif//PRINT
-		}*/
 
 		template<typename T>
 		friend class ForwardList;
@@ -87,7 +75,6 @@ template<typename T>class ForwardList
 		ForwardList()
 		{
 			this->Head = nullptr;
-
 
 
 #ifdef PRINT
@@ -115,27 +102,26 @@ template<typename T>class ForwardList
 
 
 
-		ForwardList(std::initializer_list<T> list)
+		ForwardList(const std::initializer_list<T>& list)
 		{
-
-			this->Head = nullptr;
-			
-			{
-				push_front(Data);
-			}
-
 #ifdef PRINT
 			cout << "L_DataConstructor >> \t" << this << endl;
 #endif//PRINT
-		}
 
+
+			// foreach
+			for (const auto &element : list)
+			{
+				push_back(element);
+			}
+
+		}
 
 
 		ForwardList(const ForwardList& other)
 		{
-			this->Head = nullptr;
-	
 			Element<T>* Iterator = other.Head;
+
 
 			for (size_t i = 0; i < other.SIZE; i++, Iterator = Iterator->pNext)
 			{
@@ -148,11 +134,76 @@ template<typename T>class ForwardList
 #endif//PRINT
 		}
 
-		
+
+
+		ForwardList operator = (const ForwardList& other )
+	   {
+			this->clear();
+			
+			//this->Head = nullptr;
+         #ifdef PRINT
+			cout << "L_CopyAssigment >> \t" << this << endl;
+         #endif//PRINT
+
+			Element<T>* Iterator = other.Head;
+
+
+			for (size_t i = 0; i < other.SIZE; i++, Iterator = Iterator->pNext)
+			{
+				push_back(Iterator->Data);
+			}
+
+
+			return *this;
+
+		}
+	
+
+		ForwardList(const ForwardList  && other)
+		{
+			Element<T>* Iterator = other.Head;
+
+
+			for (size_t i = 0; i < other.SIZE; i++, Iterator = Iterator->pNext)
+			{
+				push_back(Iterator->Data);
+			}
+
+			~other();
+#ifdef PRINT
+			cout << "L_MoveConstructor >> \t" << this << endl;
+#endif//PRINT
+		}
+
+
+
+		ForwardList operator = (const ForwardList&& other )
+	   {
+			this->clear();
+			
+			//this->Head = nullptr;
+         #ifdef PRINT
+			cout << "L_CopyAssigment >> \t" << this << endl;
+         #endif//PRINT
+
+			Element<T>* Iterator = other.Head;
+
+
+			for (size_t i = 0; i < other.SIZE; i++, Iterator = Iterator->pNext)
+			{
+				push_back(Iterator->Data);
+			}
+
+
+			return *this;
+
+		}
+	
+
+
 		~ForwardList()
 		{
 			clear();
-
 
 #ifdef PRINT
 			cout << "L_Destructor >> \t" << this << endl;
@@ -187,7 +238,8 @@ template<typename T>class ForwardList
 
 		void erase(size_t index)
 		{
-			if (index >= SIZE || SIZE == 0 /*!Head*/)return;
+			if (index >= SIZE || SIZE == 0 /*!Head*/) return;
+
 			else if (index == 0)
 			{
 				pop_front(); return;
@@ -201,10 +253,13 @@ template<typename T>class ForwardList
 			Element<T>* To_Delete = Iterator->pNext;
 
 			Iterator->pNext = Iterator->pNext->pNext;
-           //Iterator->pNext = To_Delete->pNext;
+
+           //	Iterator->pNext = To_Delete->pNext;
 			delete To_Delete;
+
 			SIZE--;
 		}
+
 
 
 
@@ -215,6 +270,7 @@ template<typename T>class ForwardList
 			{
 				push_back(Data); return;
 			}
+
 			else if (this->SIZE == 0 || index == 0)
 			{
 				push_front(Data); return;
@@ -224,8 +280,11 @@ template<typename T>class ForwardList
 			{
 				Iterator = Iterator->pNext;
 		 	}
+
 		    Element<T>* New = new Element<T>(Data, Iterator->pNext);
+
 			Iterator->pNext = New;
+
 			SIZE++;
 		}
 
@@ -242,12 +301,10 @@ template<typename T>class ForwardList
 
 
 
-
 		void pop_back()
 		{
 			erase(SIZE - 1);
 		}
-
 
 
 
@@ -292,7 +349,9 @@ template<typename T>class ForwardList
 	
 
 			Element<T>* Node = Head;
+
 			size_t i = 0;
+
 			while (Node)
 			{
 				if (i == index)
@@ -304,6 +363,7 @@ template<typename T>class ForwardList
 		}
 
 
+		
 
 };
 

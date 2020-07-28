@@ -28,51 +28,81 @@ Done:
 
 */
 
+//#define CONSTRUCTORS
+//#define EXE 
+//#define OPERATOR[]
+#define CANCATENATION
+
+
 void main()
 {
 
-	/*
-		int n = 10;
-
-		ForwardList <char>lst(n);
-
-		for (int i = 0; i < n; i++)
-		{
-			lst[i] = i + '0' - 'a';
-		}
-
-		for (int i = 0; i < n; i++)
-		{
-			cout << "lst[" << i << "] = " << lst[i] << endl;
-		}
 
 
-		ForwardList<char>copy(lst);
 
-		for (int i = 0; i < n; i++)
-		{
-			cout << "copy[" << i << "] = " << copy[i] << endl;
-		}
-	*/
 
-	//	ForwardList<const char*>str = {"Hello","World","!"};
-		//cout << str;
-	ForwardList<int>ctr = { 1 };
-	//cout << ctr;
-//	cout << "\n---------------------------------------\n";
+#ifdef OPERATOR[]
+
+
+	int n = 10;
+
+	ForwardList <char>lst(n);
+
+	for (int i = 0; i < n; i++)
+	{
+		lst[i] = i + '0' - 'a';
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << "lst[" << i << "] = " << lst[i] << endl;
+	}
+
+
+	ForwardList<char>copy(lst);
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << "copy[" << i << "] = " << copy[i] << endl;
+	}
+
+
+
+#endif // OPERATOR[]
+
+
+
+#ifdef CONSTRUCTORS
+
+	ForwardList<const char*>str = { "Hello","World","!" };
+	cout << str;
+	ForwardList<int>ctr = { 1,3,5,7 };
+	cout << ctr;
+	cout << "\n---------------------------------------\n";
 	ForwardList<int> copy_ctr;
 	copy_ctr = ctr;
 	cout << copy_ctr;
+#endif // CONSTRUCTORS
 
-	ForwardList<const char*> copy_move = ForwardList<const char*>(10);
-	cout << copy_move;
-	/*	for (size_t i = 0 ;   i < copy_move.get)
-	{
 
-	}*/
-	
 
-	/*
+
+	//ForwardList<const char*> copy_move();
+	//cout << copy_move;
+
+	ForwardList<int> a = { 9,8,7,6,5,4,3,2,1,0};
+	ForwardList<int> b = { 1,2,3,4,5,6,7,8,90,0,10};
+	ForwardList<int> res;
+	res = a + b;
+	cout << res;
+	/*ForwardList<const char*> c = { "Hello ","Hello ","Hello ", };
+	ForwardList<const char*> v = { 1,2,3,4,5,6,7,8,9 };
+	ForwardList<const char*> rez;
+	rez = c + v;
+	cout << rez;*/
+
+#ifdef EXE
+
 	size_t n;
 
 	cout << "Input size >> ";
@@ -121,5 +151,7 @@ void main()
 
 	} while (true);
 
-	*/
+
+#endif // EXE
+
 }

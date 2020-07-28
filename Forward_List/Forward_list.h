@@ -56,9 +56,11 @@ template<typename T>  class Element
 		}
 
 
-
 		template<typename T>
 		friend class ForwardList;
+	
+
+
 	};
 
 
@@ -159,7 +161,7 @@ template<typename T>class ForwardList
 		}
 	
 
-		ForwardList(const ForwardList  && other)
+	    /*	ForwardList(const ForwardList  && other)
 		{
 			Element<T>* Iterator = other.Head;
 
@@ -173,8 +175,7 @@ template<typename T>class ForwardList
 #ifdef PRINT
 			cout << "L_MoveConstructor >> \t" << this << endl;
 #endif//PRINT
-		}
-
+		}*/
 
 
 		ForwardList operator = (const ForwardList&& other )
@@ -334,10 +335,10 @@ template<typename T>class ForwardList
 		}*/
 
 
-		T& operator[](size_t index)
+		T& operator[](size_t index)const
 		{
 				
-				if (SIZE == 0 || index > SIZE)
+				/*if (SIZE == 0 || index > SIZE)
 				{
 					// I don't know if I can do this
 					T value = NULL;
@@ -345,7 +346,7 @@ template<typename T>class ForwardList
 					cout << "undefined value";
 
 					return value;
-				}
+				}*/
 	
 
 			Element<T>* Node = Head;
@@ -362,16 +363,49 @@ template<typename T>class ForwardList
 			}
 		}
 
-
+		size_t get_size()const
+		{
+			return SIZE;
+		}
 		
 
 };
 
+	template<typename T>std::ostream& operator <<(std::ostream& os, const ForwardList<T>& other)
+	{
+		other.print();
+		return os;
+	}
 
-template<typename T>std::ostream& operator <<(std::ostream& os, const ForwardList<T>& other)
-{
-	other.print();
-	return os;
-}
+
+
+	template<typename T>ForwardList<T> operator+(const ForwardList<T>& left, const ForwardList<T>& right)
+	{
+
+	//	ForwardList<T> Temp( left.get_size() > right.get_size() ? left : right );
+		ForwardList<T> Temp;
+		for (int i = 0; i < left.get_size() ; i++)
+		{
+			Temp.push_back(left[i]);
+		}
+		cout << Temp;
+		for (int i = 0; i < right.get_size(); i++)
+		{
+			if (i >= Temp.get_size())
+			{
+				Temp.push_back(right[i]);
+				continue;
+			}
+
+			Temp[i] += right[i];
+		}
+		return Temp;
+
+
+	}
+
+
+
+
 
 }

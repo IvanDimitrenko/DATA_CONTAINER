@@ -4,13 +4,6 @@ using namespace Forward_List;
 #include<forward_list>
 
 /*
-TODO:
-Add to the ForwardList class:
-
-
-4. Operator +, which will concatenate lists;
-5. MoveMethods;
-
 
 
 Done:
@@ -19,6 +12,8 @@ Done:
 3. The assignment operator;
 4. pop_front - removes the starting element;
 5. pop_back - removes the last item;
+4. Operator +, which will concatenate lists;
+5. MoveMethods;
 6. insert - inserts the value at the index;
 7. erase - deletes the value by index;
 8. Operator [];
@@ -28,9 +23,9 @@ Done:
 
 */
 
-//#define CONSTRUCTORS
+#define CONSTRUCTORS
 //#define EXE 
-//#define OPERATOR[]
+#define OPERATOR
 #define CANCATENATION
 
 
@@ -41,8 +36,9 @@ void main()
 
 
 
-#ifdef OPERATOR[]
+#ifdef OPERATOR
 
+	
 
 	int n = 10;
 
@@ -68,39 +64,68 @@ void main()
 
 
 
-#endif // OPERATOR[]
+#endif // OPERATOR
 
 
 
 #ifdef CONSTRUCTORS
 
+	cout << "\n---------------------------------------\n";
+
 	ForwardList<const char*>str = { "Hello","World","!" };
 	cout << str;
 	ForwardList<int>ctr = { 1,3,5,7 };
 	cout << ctr;
-	cout << "\n---------------------------------------\n";
 	ForwardList<int> copy_ctr;
 	copy_ctr = ctr;
 	cout << copy_ctr;
+	
+
 #endif // CONSTRUCTORS
 
 
+	cout << "\n---------------------------------------\n";
 
 
-	//ForwardList<const char*> copy_move();
-	//cout << copy_move;
+	ForwardList<int> a = {1,2,3};
+	ForwardList<int> b = {1,2,3,4};
+	ForwardList<int> res(a + b);
 
-	ForwardList<int> a = { 9,8,7,6,5,4,3,2,1,0};
-	ForwardList<int> b = { 1,2,3,4,5,6,7,8,90,0,10};
-	ForwardList<int> res;
-	res = a + b;
+
 	cout << res;
-	/*ForwardList<const char*> c = { "Hello ","Hello ","Hello ", };
-	ForwardList<const char*> v = { 1,2,3,4,5,6,7,8,9 };
-	ForwardList<const char*> rez;
-	rez = c + v;
-	cout << rez;*/
 
+
+	cout << "\n---------------------------------------\n";
+
+	
+	ForwardList<std::string> c = { "Hello ","Hello ","Hello ", };
+	ForwardList<std::string> v = {" World!", " World!", " World!"};
+	ForwardList<std::string> rez;
+	rez = plus( c, v );
+	cout << rez;
+	
+	cout << "\n---------------------------------------\n";
+
+
+	ForwardList<int>vb;
+	for (int i = 0; i < 3; i++)
+	{
+		vb.push_back(i);
+	}	
+	ForwardList<int>kl;
+	for (int i = 0; i < 3; i++)
+	{
+		kl.push_back(i + 5);
+	}
+
+	ForwardList<int> fgh(vb + kl);
+
+	
+
+	cout << fgh;
+
+
+		
 #ifdef EXE
 
 	size_t n;

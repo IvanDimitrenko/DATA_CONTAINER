@@ -1,6 +1,12 @@
 # DATA_CONTAINERS
 dynamic data structure
 
+TODO:
+11.class Iterator
+12. Trow exception operator[]
+
+
+
 Done:
 1. Destructor;
 2. Copy constructor;

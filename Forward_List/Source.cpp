@@ -22,10 +22,10 @@ Done:
 
 */
 
-#define CONSTRUCTORS
+//#define CONSTRUCTORS
 //#define EXE 
-#define OPERATOR
-#define CANCATENATION
+//#define OPERATOR
+//#define CANCATENATION
 
 
 void main()
@@ -33,7 +33,14 @@ void main()
 
 
 
+	ForwardList<int> a(1), a2(2), a3(3), a4(5);
+	
+	ForwardList<ForwardList<int> > cop = {a,a2,a3,a4 };
 
+	//cout << a2;
+	
+
+	cout << cop;
 
 #ifdef OPERATOR
 
@@ -82,7 +89,7 @@ void main()
 
 #endif // CONSTRUCTORS
 
-
+/*
 	cout << "\n---------------------------------------\n";
 
 
@@ -122,7 +129,7 @@ void main()
 	
 
 	cout << fgh;
-
+	*/
 
 		
 #ifdef EXE

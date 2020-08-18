@@ -10,7 +10,25 @@ using std::cin;
 namespace Forward_List
 {
 
+
 	//#define PRINT
+
+	/*template<typename T> class Iterator
+	{
+
+		template<typename T>friend class ForwardList, friend class Element;
+
+	private:
+		Element<T> Iterator;
+	public:
+		Element<T>&operator++(Element<T>* )
+		{
+			Iterator;
+		}
+
+	};*/
+	
+
 
 template<typename T>  class Element
 	{
@@ -46,6 +64,7 @@ template<typename T>  class Element
 		}
 
 
+		
 		template<typename T>
 		friend class ForwardList;
 	
@@ -63,6 +82,10 @@ template<typename T>class ForwardList
 
 	public:
 
+	
+
+		
+
 		ForwardList()
 		{
 			this->Head = nullptr;
@@ -74,12 +97,9 @@ template<typename T>class ForwardList
 		}
 
 
-		ForwardList(size_t size)
+		ForwardList(size_t size):ForwardList()
 		{
-
-			this->Head = nullptr;
-
-			for (size_t i = 0; i < size; i++)
+			while(size--)
 			{
 				push_front(NULL);
 			}
@@ -113,7 +133,7 @@ template<typename T>class ForwardList
 		{
 			Element<T>* Iterator = other.Head;
 
-			for (size_t i = 0; i < other.SIZE; i++, Iterator = Iterator->pNext)
+			for (size_t i = 0; i < other.SIZE; i++, Iterator++)
 			{
 				push_back(Iterator->Data);
 			}
@@ -220,10 +240,8 @@ template<typename T>class ForwardList
 
 		void clear()
 		{
-			while (SIZE)
-			{
-				pop_front();
-			}
+			while (SIZE) pop_front();
+			
 		}
 
 
@@ -325,19 +343,7 @@ template<typename T>class ForwardList
 		T& operator[](size_t index)const
 		{
 
-				/*
-
-			//   this is necessary when index > Size , the list and so that the program does not crash ,  I don't know if I can do this
-
-				if (SIZE == 0 || index > SIZE)
-				{
-					T value = NULL;
-
-					cout << "undefined value";
-
-					return value;
-				}
-				*/
+			
 	
 			Element<T>* Node = Head;
 

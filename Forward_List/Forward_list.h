@@ -10,23 +10,56 @@ using std::cin;
 namespace Forward_List
 {
 
+	template<typename T>  class Element;
 
 	//#define PRINT
 
-	/*template<typename T> class Iterator
+	template<typename T> class Iterator_forward_list
 	{
 
-		template<typename T>friend class ForwardList, friend class Element;
+		//template<typename T>friend class ForwardList;
+		//template<typename T>friend class Element;
+	   	  
+	private: 
 
-	private:
-		Element<T> Iterator;
+		Element<T>* Temp;
+
 	public:
-		Element<T>&operator++(Element<T>* )
+		Iterator_forward_list(Element<T>* Temp = nullptr) 
 		{
-			Iterator;
+			this.Temp = Temp;
+			cout << "It_ForList_Constructor" << endl;
 		}
 
-	};*/
+		~Iterator_forward_list()
+		{
+			cout << "It_ForList_Destructor" << endl;
+		}
+
+		Iterator_forward_list&operator++()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		Iterator_forward_list&operator++(int)// & Iterator_forward_list
+		{
+			Iterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+		bool operator != ( Element* other_ele)const
+		{
+			return this->Temp != other_ele;
+			
+		}
+		operator bool()const
+		{
+			return Temp;
+		}
+		Iterator_forward_list
+	
+
+	};
 	
 
 
@@ -67,6 +100,8 @@ template<typename T>  class Element
 		
 		template<typename T>
 		friend class ForwardList;
+		template<typename T>
+		friend class Iterator_forward_list;
 	
 	};
 
@@ -80,16 +115,13 @@ template<typename T>class ForwardList
 		Element<T>* Head;
 		size_t SIZE = 0;
 
-	public:
-
-	
+	public:	
 
 		
 
 		ForwardList()
 		{
 			this->Head = nullptr;
-
 
 #ifdef PRINT
 			cout << "L_DefConstructor >> \t" << this << endl;
@@ -104,7 +136,6 @@ template<typename T>class ForwardList
 				push_front(NULL);
 			}
 
-
 #ifdef PRINT
 			cout << "L_SizeConstructor >> \t" << this << endl;
 #endif//PRINT
@@ -114,13 +145,11 @@ template<typename T>class ForwardList
 
 		ForwardList(const std::initializer_list<T>& list)
 		{
-
-			// foreach
+       		// foreach
 			for (const auto &element : list)
 			{
 				push_back(element);
 			}
-
 
 #ifdef PRINT
 			cout << "L_DataConstructor >> \t" << this << endl;
@@ -131,9 +160,9 @@ template<typename T>class ForwardList
 
 		ForwardList(const ForwardList& other)
 		{
-			Element<T>* Iterator = other.Head;
-
-			for (size_t i = 0; i < other.SIZE; i++, Iterator++)
+			
+			Element<T>*Iterator = other.Head;
+			for (size_t i = 0; i < other.SIZE; i++, Iterator=Iterator->pNext)
 			{
 				push_back(Iterator->Data);
 			}
@@ -342,14 +371,12 @@ template<typename T>class ForwardList
 
 		T& operator[](size_t index)const
 		{
-
-			
-	
+		
 			Element<T>* Node = Head;
-
+			
 			size_t i = 0;
 
-			while (Node)
+			while (Node=Node->pNext)
 			{
 				if (i == index)
 				{
@@ -357,6 +384,15 @@ template<typename T>class ForwardList
 				}
 				Node = Node->pNext; i++;
 			}
+		}
+
+		Iterator_forward_list begin()const
+		{
+			return Head;
+		}
+		Iterator_forward_list end()const
+		{
+			return nullptr;
 		}
 
 		

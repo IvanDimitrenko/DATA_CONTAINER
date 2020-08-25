@@ -20,6 +20,12 @@ Done:
 10. Constructor for a given number of elements ForwardList list (5), elements must be filled with zeros;
 
 
+TODO:
+class Iterator
+pointer arithmetic 
+operator cout 
+
+
 */
 
 //#define CONSTRUCTORS
@@ -29,18 +35,19 @@ Done:
 
 
 void main()
-{
+{   
 
 
 
 	ForwardList<int> a(1), a2(2), a3(3), a4(5);
 	
-	ForwardList<ForwardList<int> > cop = {a,a2,a3,a4 };
-
-	//cout << a2;
+	a4[3] = 5;
+	cout << a4;
+	 
+	// cout << a2;
 	
 
-	cout << cop;
+	// cout << cop;
 
 #ifdef OPERATOR
 

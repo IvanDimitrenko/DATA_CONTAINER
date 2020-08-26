@@ -19,18 +19,50 @@ Done:
 9. ForwardList list {3, 5, 8, 13, 21}; for (int i = 0; i <list.size; i ++) cout << list [i] << tab; cout << endl;
 10. Constructor for a given number of elements ForwardList list (5), elements must be filled with zeros;
 
+1.1 MessageBox(exception)
+
+TODO:
+
+1.2 Class Iterator
+1.3 Optimization code
+1.4 Pointers arithmetic
 
 */
 
-#define CONSTRUCTORS
+//#define CONSTRUCTORS
 //#define EXE 
-#define OPERATOR
-#define CANCATENATION
+//#define OPERATOR
+//#define CANCATENATION
+//#define LIST_INIZIALIZER
+#define EXCEPTION
 
 
 void main()
 {
 
+
+
+
+
+
+
+
+
+
+
+#ifdef EXCEPTION
+
+	ForwardList<int> c136(1000000);
+	ForwardList<int>c23;
+
+	c23 = c136;
+
+	c136 = c23;
+	
+
+	
+
+#endif // EXCEPTION
 
 
 
@@ -82,12 +114,13 @@ void main()
 
 #endif // CONSTRUCTORS
 
+#ifdef LIST_INIZIALIZER
 
 	cout << "\n---------------------------------------\n";
 
 
-	ForwardList<int> a = {1,2,3};
-	ForwardList<int> b = {1,2,3,4};
+	ForwardList<int> a = { 1,2,3 };
+	ForwardList<int> b = { 1,2,3,4 };
 	ForwardList<int> res(a + b);
 
 
@@ -96,13 +129,13 @@ void main()
 
 	cout << "\n---------------------------------------\n";
 
-	
+
 	ForwardList<std::string> c = { "Hello ","Hello ","Hello ", };
-	ForwardList<std::string> v = {" World!", " World!", " World!"};
+	ForwardList<std::string> v = { " World!", " World!", " World!" };
 	ForwardList<std::string> rez;
-	rez = plus( c, v );
+	rez = plus(c, v);
 	cout << rez;
-	
+
 	cout << "\n---------------------------------------\n";
 
 
@@ -110,7 +143,7 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		vb.push_back(i);
-	}	
+	}
 	ForwardList<int>kl;
 	for (int i = 0; i < 3; i++)
 	{
@@ -119,10 +152,12 @@ void main()
 
 	ForwardList<int> fgh(vb + kl);
 
-	
+
 
 	cout << fgh;
 
+
+#endif // LIST_INIZIALIZER
 
 		
 #ifdef EXE

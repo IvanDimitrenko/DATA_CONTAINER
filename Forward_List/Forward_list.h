@@ -1,5 +1,6 @@
 #pragma once
 
+#include<Windows.h>
 #include<iostream>
 #include<conio.h>
 #include<string>
@@ -9,11 +10,122 @@ using std::cin;
 
 namespace Forward_List
 {
-
 	//#define PRINT
+	//#define PRINT_ITERATOR
 
-template<typename T>  class Element
+	template<typename T>  class Element;
+	template<typename T> class ForwardList;
+
+
+
+
+	template<typename T> class Iterator
 	{
+		template<typename T> friend class ForwardList;
+
+		Element<T>* Temp;
+
+	public:
+
+
+		Iterator(Element<T>* &Temp = nullptr) //: Temp(Temp)
+		{
+			this->Temp = Temp;
+
+#ifdef PRINT_ITERATOR
+			cout << "FL_IteratorConstructor >> \t" << this << endl;
+#endif // PRINT_ITERATOR
+
+		}
+
+
+
+		~Iterator()
+		{
+#ifdef PRINT_ITERATOR
+			cout << "FL_IteratorDestructor >> \t" << this << endl;
+#endif // PRINT_ITERATOR
+		}
+
+
+
+		Iterator&operator++()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+
+
+
+		Iterator& operator++(int)// & Iterator...
+		{
+			Iterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+
+
+
+
+		bool operator != (Element<T>* other)const
+		{
+			return this->Temp != other;
+		}
+
+
+
+
+		operator bool()const
+		{
+			return Temp;
+		}
+
+
+
+		Iterator& operator += (size_t index)
+		{
+
+			size_t current = 0;
+
+			while (Temp)
+			{
+				if (current == index)
+				{
+					return Temp->Data;
+				}
+				++Temp; current++;
+			}
+			return Iterator;
+		}
+
+
+
+		Iterator& operator[](size_t index)
+		{
+
+			Temp += index;
+			return *this;
+
+		}
+
+
+		T& operator*()
+		{
+			return Temp->Data;
+		}
+
+	};
+
+
+
+
+
+	template<typename T>  class Element
+	{
+
+		template<typename T>friend class ForwardList;
+		template<typename T>friend class Iterator;
+
 	private:
 		T Data;
 		Element* pNext;
@@ -46,14 +158,13 @@ template<typename T>  class Element
 		}
 
 
-		template<typename T>
-		friend class ForwardList;
-	
+
+
 	};
 
 
 
-template<typename T>class ForwardList
+	template<typename T>class ForwardList
 	{
 
 	private:
@@ -66,8 +177,6 @@ template<typename T>class ForwardList
 		ForwardList()
 		{
 			this->Head = nullptr;
-
-
 #ifdef PRINT
 			cout << "L_DefConstructor >> \t" << this << endl;
 #endif//PRINT
@@ -76,7 +185,6 @@ template<typename T>class ForwardList
 
 		ForwardList(size_t size)
 		{
-
 			this->Head = nullptr;
 
 			for (size_t i = 0; i < size; i++)
@@ -95,12 +203,11 @@ template<typename T>class ForwardList
 		ForwardList(const std::initializer_list<T>& list)
 		{
 
-			// foreach
+
 			for (const auto &element : list)
 			{
 				push_back(element);
 			}
-
 
 #ifdef PRINT
 			cout << "L_DataConstructor >> \t" << this << endl;
@@ -109,13 +216,12 @@ template<typename T>class ForwardList
 
 
 
-		ForwardList(const ForwardList& other)
+		ForwardList(ForwardList& other) : ForwardList(other.SIZE)
 		{
-			Element<T>* Iterator = other.Head;
 
-			for (size_t i = 0; i < other.SIZE; i++, Iterator = Iterator->pNext)
+			for (Iterator<T> ito = other.begin(), itt = begin(); ito; ++itt, ++ito)
 			{
-				push_back(Iterator->Data);
+				*itt = *ito;
 			}
 
 #ifdef PRINT
@@ -124,30 +230,71 @@ template<typename T>class ForwardList
 		}
 
 
+		ForwardList(const ForwardList &&  other) : ForwardList(other.SIZE)
+		{
 
-	    ForwardList(const ForwardList &&  other)
-		    {
+			for (Iterator<T> ito = other.begin(), itt = begin(); ito; ++itt, ++ito)
+			{
+				*itt = *ito;
+			}
 
-			  Element<T>* Iterator = other.Head;
-
-			  for (size_t i = 0; i < other.SIZE ; i++ , Iterator = Iterator->pNext)
-			  {
-				   push_back(Iterator->Data);
-			  }
-
-			  other.~ForwardList();
+			other.~ForwardList();
 
 #ifdef PRINT
 			cout << "L_MoveConstructor >> \t" << this << endl;
 #endif//PRINT
-		   }
+		}
 
 
 
+		ForwardList& operator = (ForwardList& other)
+		{
 
-		ForwardList& operator = (const ForwardList& other )
-	   {
-			this->clear();			
+			this->resize(other.get_size());
+
+			Iterator<T> ito(other.Head), itt(this->Head);
+
+			for (size_t i = 0; i < other.SIZE; i++, ++itt, ++ito)
+			{
+				*itt = *ito;
+			}
+
+
+#ifdef PRINT
+			cout << "L_CopyAssigment >> \t" << this << endl;
+#endif//PRINT
+
+			return *this;
+		}
+
+
+		ForwardList& operator = (ForwardList&& other)
+		{
+
+			this->resize(other.get_size());
+
+			Iterator<T> ito(other.Head), itt(this->Head);
+
+
+			for (size_t i = 0; i < other.SIZE; i++, ++itt, ++ito)
+			{
+				*itt = *ito;
+			}
+
+			other.~ForwardList();
+
+#ifdef PRINT
+			cout << "L_CopyAssigment >> \t" << this << endl;
+#endif//PRINT
+
+			return *this;
+		}
+
+
+	/*	ForwardList& operator = (const ForwardList&& other)
+		{
+
+			this->clear();
 
 			Element<T>* Iterator = other.Head;
 
@@ -156,38 +303,29 @@ template<typename T>class ForwardList
 				push_back(Iterator->Data);
 			}
 
+			other.~ForwardList();
 
-         #ifdef PRINT
-			cout << "L_CopyAssigment >> \t" << this << endl;
-         #endif//PRINT
+#ifdef PRINT
+			cout << "L_MoveAssigment >> \t" << this << endl;
+#endif//PRINT
+
 
 			return *this;
 		}
+		*/
 
 
 
-	    ForwardList& operator = (const ForwardList&& other)
-		  {
-			
+		void resize(size_t SIZE)
+		{
 			this->clear();
 
-			Element<T>* Iterator = other.Head;
-
-			for (size_t i = 0 ; i < other.SIZE; i++, Iterator = Iterator->pNext)
+			for (size_t i = 0; i < SIZE; i++)
 			{
-				push_back(Iterator->Data);
-		    }
+				push_front();
+			}
+		}
 
-			other.~ForwardList();
-
-			#ifdef PRINT
-					cout << "L_MoveAssigment >> \t" << this << endl;
-			#endif//PRINT
-
-			return *this;
-
-		  }
-		
 
 
 		~ForwardList()
@@ -228,6 +366,7 @@ template<typename T>class ForwardList
 
 
 
+
 		void erase(size_t index)
 		{
 			if (index >= SIZE || SIZE == 0 /*!Head*/) return;
@@ -246,11 +385,12 @@ template<typename T>class ForwardList
 
 			Iterator->pNext = Iterator->pNext->pNext;
 
-           //	Iterator->pNext = To_Delete->pNext;
+			//	Iterator->pNext = To_Delete->pNext;
 			delete To_Delete;
 
 			SIZE--;
 		}
+
 
 
 
@@ -265,15 +405,17 @@ template<typename T>class ForwardList
 			{
 				push_front(Data); return;
 			}
-			Element<T>* Iterator = this->Head;
+
+			Element<T>* it = this->Head;
+
 			for (size_t i = 0; i < index - 1; i++)
 			{
-				Iterator = Iterator->pNext;
-		 	}
+				it = it->pNext;
+			}
 
-		    Element<T>* New = new Element<T>(Data, Iterator->pNext);
+			Element<T>* New = new Element<T>(Data, it->pNext);
 
-			Iterator->pNext = New;
+			it->pNext = New;
 
 			SIZE++;
 		}
@@ -305,14 +447,16 @@ template<typename T>class ForwardList
 		void print()const
 		{
 			cout << endl;
+
 			size_t i = 0;
+
 			for (Element<T>* Iterator = Head; Iterator; Iterator = Iterator->pNext, i++)
 			{
 				cout << Iterator << '\t' << Iterator->Data << "\t Index >> " << i << '\t' << Iterator->pNext << endl;
 			}
+
 			cout << endl << "Size >> " << SIZE << endl;
 		}
-
 
 
 		size_t get_size()const
@@ -321,10 +465,14 @@ template<typename T>class ForwardList
 		}
 
 
-
 		T& operator[](size_t index)const
 		{
 
+			if (index >= SIZE)
+			{
+				MessageBox(NULL, L"run-time check failure #2", L"ForwardList", MB_OK);
+				throw 2;
+			}
 
 			Element<T>* Node = Head;
 
@@ -332,61 +480,65 @@ template<typename T>class ForwardList
 
 			while (Node)
 			{
-				if (i == index)
-				{
-					return Node->Data;
-				}
-				Node = Node->pNext; i++;
+				if (i++ == index) return Node->Data;
+
+				Node = Node->pNext;
+
 			}
 		}
 
-		
-};
+		Iterator<T> begin()
+		{
+			return Head;
+		}
+		Iterator<T> end()
+		{
+			return nullptr;
+		}
+	};
 
 
-
-template<typename T>std::ostream& operator <<(std::ostream& os, const ForwardList<T>& other)
-	 {
+	template<typename T>std::ostream& operator <<(std::ostream& os, const ForwardList<T>& other)
+	{
 		other.print();
 		return os;
-	 }
+	}
 
 
-
-template<typename T>ForwardList<T> plus(const ForwardList<T>& left, const ForwardList<T>& right)
-{	
+	template<typename T>ForwardList<T> plus(const ForwardList<T>& left, const ForwardList<T>& right)
+	{
 		ForwardList<T> Temp;
-	
-		size_t size = (left.get_size() > right.get_size()) ? left.get_size()  : right.get_size();		 
 
-		for (size_t i = 0; i < size ; i++)
-		{	
+		size_t size = (left.get_size() > right.get_size()) ? left.get_size() : right.get_size();
+
+		for (size_t i = 0; i < size; i++)
+		{
 			if (i < left.get_size() && i < right.get_size())
 			{
-				Temp.push_back(left[i] + right[i] );
+				Temp.push_back(left[i] + right[i]);
 				continue;
 			}
-		  
+
 			right.get_size() == size ?
 
 				Temp.push_back(right[i])
-			    : 
+				:
 				Temp.push_back(left[i]);
 		}
 		return Temp;
-}
+	}
 
 
-template<typename T> ForwardList<T> operator+(const ForwardList<T>& left, const ForwardList<T>& right)
-{
+	template<typename T> ForwardList<T> operator+(const ForwardList<T>& left, const ForwardList<T>& right)
+	{
 		ForwardList<T> Temp(left);
 
-		for (size_t i = 0; i <  right.get_size() ; i++)
+		for (size_t i = 0; i < right.get_size(); i++)
 		{
 			Temp.push_back(right[i]);
 		}
 		return Temp;
-}
+	}
 
 
 }

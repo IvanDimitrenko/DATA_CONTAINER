@@ -325,20 +325,7 @@ template<typename T>class ForwardList
 		T& operator[](size_t index)const
 		{
 
-				/*
 
-			//   this is necessary when index > Size , the list and so that the program does not crash ,  I don't know if I can do this
-
-				if (SIZE == 0 || index > SIZE)
-				{
-					T value = NULL;
-
-					cout << "undefined value";
-
-					return value;
-				}
-				*/
-	
 			Element<T>* Node = Head;
 
 			size_t i = 0;

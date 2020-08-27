@@ -2,10 +2,10 @@
 
 #include<Windows.h>
 #include<iostream>
-#include<conio.h>
 #include<string>
-using std::endl;
+
 using std::cout;
+using std::endl;
 using std::cin;
 
 namespace Forward_List
@@ -67,21 +67,6 @@ namespace Forward_List
 
 
 
-		bool operator != (Element<T>* other)const
-		{
-			return this->Temp != other;
-		}
-
-
-
-
-		operator bool()const
-		{
-			return Temp;
-		}
-
-
-
 		Iterator& operator += (size_t index)
 		{
 
@@ -100,6 +85,7 @@ namespace Forward_List
 
 
 
+
 		Iterator& operator[](size_t index)
 		{
 
@@ -113,6 +99,22 @@ namespace Forward_List
 		{
 			return Temp->Data;
 		}
+
+
+
+
+		bool operator != (Element<T>* other)const
+		{
+			return this->Temp != other;
+		}
+
+
+
+		operator bool()const
+		{
+			return Temp;
+		}
+
 
 	};
 
@@ -156,7 +158,6 @@ namespace Forward_List
 			cout << "E_Destructor >> \t" << this << endl;
 #endif//PRINT
 		}
-
 
 
 

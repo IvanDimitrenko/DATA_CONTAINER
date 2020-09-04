@@ -44,13 +44,6 @@ void main()
 
 
 
-
-
-
-
-
-
-
 #ifdef EXCEPTION
 
 	ForwardList<int> c136(1000000);

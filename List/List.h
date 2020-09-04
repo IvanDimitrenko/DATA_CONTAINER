@@ -121,12 +121,8 @@ public:
 			return Temp->Data;
 		}
 
-		T operator* ()
-		{ 
-			return Temp->Data;
-		}
-
 	};
+	
 
 	List()
 	{
@@ -245,7 +241,7 @@ public:
 
 
 
-	push_front(T Data = NULL)
+	void push_front(T Data = NULL)
 	{
 
 		Element<T>* New = new Element<T>(Data, this->Head);

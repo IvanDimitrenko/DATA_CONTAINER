@@ -34,6 +34,10 @@ void main()
 	for(List<int>::Iterator it = kel.begin();it; ++it)
 	{
 		cout << *it << endl;
+	}	
+	for(List<int>::Iterator it = kel.end();it; --it)
+	{
+		cout << *it << endl;
 	}
 	
 

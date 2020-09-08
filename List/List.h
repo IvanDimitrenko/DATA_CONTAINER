@@ -76,6 +76,14 @@ public:
 		}
 
 
+		const Iterator begin()
+		{
+			return this->Head;
+		}
+		const Iterator end()
+		{
+			return nullptr;
+		}
 
 		Iterator&operator++()
 		{
@@ -123,6 +131,59 @@ public:
 
 	};
 	
+
+	 class ReverseIterator
+	 {
+		 Element<T> Temp;
+
+	 public:
+
+		 ReverseIterator(Element<T>* Temp = nullptr):Temp(Temp)
+		 {
+			 cout << "RitConstructor >> \t" << this;
+		 }
+
+		 ~ReverseIterator()
+		 {
+			 cout << "RitDestructor >> \t" << this;
+		 }
+
+		 ReverseIterator& operator++()
+		 {
+			 Temp = Temp->pPrev;
+			 return *this;
+		 }
+
+		 ReverseIterator& operator--()
+		 {
+			 Temp = Temp->pNext;
+			 return *this;
+		 }
+
+		 T& operator *()
+		 {
+			 return Temp->Data;
+		 }
+
+		 bool operator != (const ReverseIterator& other)const
+		 {
+			 return this->Temp != other.Temp;
+		 }
+
+		 operator bool()const
+		 {
+			 return this->Temp;
+		 }
+	 
+
+	 };
+
+
+	/* std::ostream& operator <<(std::ostream& os)
+	 {
+		 other.print();
+		 return os;
+	 }*/
 
 	List()
 	{
@@ -398,17 +459,17 @@ public:
 
 	}
 
-
-	 Element<T>* begin()const
+	
+	Iterator begin()const
 	 {
 		return Head;
 	 }
 
-
-	Element<T>* end()const
+	Iterator end()const
 	{
 		return Tail;
 	}
+
 
 
 };
@@ -420,7 +481,11 @@ template<typename T>std::ostream& operator <<(std::ostream& os, const List<T>& o
 	return os;
 }
 
+/*
+template<typename T>std::ostream& operator <<(std::ostream& os, const List<T>::Iterator other)
+{
+	other.print();
+	return os;
+}
 
-
-
-
+*/

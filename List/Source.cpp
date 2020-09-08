@@ -31,14 +31,15 @@ void main()
 
 	List<int> kel = { 3, 5, 8, 13, 21 };
 
-	/*for(List<int>::Iterator it = kel.begin();it; ++it)
+	for(List<int>::Iterator it = kel.begin();it; ++it)
 	{
 		cout << *it << endl;
 	}	
+	
 	for(List<int>::Iterator it = kel.end(); it; --it)
 	{
 		cout << *it << endl;
-	}*/
+	}
 
 	for (auto  i : kel)
 	{

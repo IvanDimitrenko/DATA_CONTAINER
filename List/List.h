@@ -17,7 +17,7 @@ template<typename T> class List
 #define ITERATOR_PRINT
 	
 	
-		template<typename T> class Element
+	template<typename T> class Element
 		{
 			template<typename T> friend class List;
 			Element<T>* pNext;
@@ -178,12 +178,6 @@ public:
 
 	 };
 
-
-	/* std::ostream& operator <<(std::ostream& os)
-	 {
-		 other.print();
-		 return os;
-	 }*/
 
 	List()
 	{
@@ -460,17 +454,23 @@ public:
 	}
 
 	
-	Iterator begin()const
-	 {
-		return Head;
-	 }
+	Iterator begin()const{ return this->Head; }
 
-	Iterator end()const
-	{
-		return Tail;
-	}
+	const Iterator begin()const { return this->Head; }
+	
+	
+	Iterator end()const{ return nullptr; }
+	
+	const Iterator end()const{ return nullptr; }
 
 
+	const ReverseIterator rbegin()const { return this->Head; }
+	
+	ReverseIterator rbegin()const { return this->Head; }
+
+	const ReverseIterator rend() { return nullptr; }
+
+	const ReverseIterator rend()const { return nullptr; }
 
 };
 

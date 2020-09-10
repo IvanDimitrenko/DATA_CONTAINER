@@ -22,8 +22,7 @@ template<class T>class Tree
 
 	public:
 
-		Leaf(T Data = NULL, Leaf<T>*pLeft = nullptr, Leaf<T>pRight = nullptr)
-			:  Data(Data),	pLeft(pLeft), pRight(pRight)
+		Leaf(T Data = NULL, Leaf* pLeft = nullptr, Leaf* pRight = nullptr): Data(Data),	pLeft(pLeft), pRight(pRight)
 		{
 #ifdef PRINT_LEAF
 			cout << "LDefGrow >> \t" << this << endl;
@@ -56,13 +55,34 @@ public:
 	}
 	~Tree()
 	{
-		cout << "TFelling >> \"
+
+		cout << "TFelling >> \t" << this;
 	}
-	void plant_leaf(T Data)
+	void plant_leaf(T Data)		// Push_back(front) -=('-')=-
 	{
-		if (size == 0)this->Root = new Leaf(Data);
-		size++
+		Leaf<T>* New = new Leaf<T>(Data);
+		Leaf<T>* Worm = Root;	// Iterator
+		if (size == 0)this->Root = New;	
+			else
+			{
+			//if(Worm->Data > New->Data)
+				while (/*Worm->pLeft && Worm->pRight*/ Worm)
+				{		
+					if (New->Data > Worm->Data)Worm = Worm->pLeft;
+					else Worm = Worm->pRight;			
+				}
+				Worm = New;
+			}
+			size++;
 	}
+	void show()		// print()
+	{
+		
+		Leaf<T>* Worm = Root;
+		for (int i = 0; i < this->size; i++)
+		{
+			
+		}
 
 
 };

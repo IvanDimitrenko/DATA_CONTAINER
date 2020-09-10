@@ -1,6 +1,5 @@
 #include"List.h"
 #include<conio.h>
-
 /*
 
 TODO:
@@ -22,7 +21,6 @@ erase();
 
 
 */
-
 //#define EXE
 //#define COPY
 //#define ISITWORK
@@ -153,4 +151,3 @@ void main()
 
 																				
 }
-

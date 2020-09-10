@@ -58,7 +58,7 @@ public:
 
 		cout << "TFelling >> \t" << this;
 	}
-	void plant_leaf(T Data)		// Push_back(front) -=('-')=-
+	void plant_leaf(T Data)		// Push_back(front) (*-*)
 	{
 		Leaf<T>* New = new Leaf<T>(Data);
 		Leaf<T>* Worm = Root;	// Iterator

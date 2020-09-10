@@ -245,9 +245,6 @@ public:
 	}
 
 
-
-
-
 	List& operator = (const List& other)
 	{
 		this->clear();
@@ -282,8 +279,6 @@ public:
 	}
 
 
-
-
 	~List()
 	{
 		clear();
@@ -292,8 +287,6 @@ public:
 #endif // LIST_PRINT
 
 	}
-
-
 
 
 	void push_front(T Data = NULL)
@@ -315,11 +308,6 @@ public:
 
 		size++;
 	}
-
-
-
-
-
 
 	void pop_front(void)
 	{
@@ -352,17 +340,10 @@ public:
 	}
 
 
-
-
-
-
 	void clear(void)
 	{
 		while (this->size) pop_front();
 	}
-
-
-
 
 
 	void erase(size_t index)
@@ -398,10 +379,6 @@ public:
 	}
 
 
-
-
-
-
 	void print()const
 	{
 		for (Element<T>* it = this->Head; it ; it = it->pNext)
@@ -418,8 +395,6 @@ public:
 			cout << it << "\t" << it->Data << "\t" << it->pPrev << endl;
 		}
 	}
-
-
 
 
 	Element<T>* &get_element(size_t index)

@@ -45,6 +45,50 @@ template<class T>class Tree
 	size_t size;
 
 public:
+
+	class iterator
+	{
+
+		Leaf<T>* it;
+
+	public:
+
+		iterator(Leaf<T>* it = nullptr): it(it)
+		{
+#ifdef PRINT_ITERATOR
+			cout << "ItConstructor >> \t" << this << endl;
+#endif // PRINT_ITERATOR
+		}
+
+		~iterator()
+		{
+#ifdef PRINT_ITERATOR
+			cout << "ItDestructo >> \t" << this << endl;
+#endif // PRINT_ITERATOR
+
+		}
+
+		operator bool()
+		{
+			return it;
+		}
+
+		iterator operator++()
+		{
+			if (it->pLeft)
+			{
+				return this->it->pLeft;
+			}
+			else if (it->pRight)
+			{
+				return this->it->pRight;
+			}
+			return this->it;
+		}
+
+
+	};
+
 	Tree()
 	{
 		this->Root = nullptr;
@@ -53,6 +97,18 @@ public:
 		cout << "TDefPlant >> \t" << this << endl;
 #endif // PRINT_TREE
 
+	}
+
+	Tree(const std::initializer_list<T>& list): Tree()
+	{
+		for (const auto i : list)
+		{
+			plant_leaf(i);
+		}
+	}
+	Tree(const Tree& other) : Tree()
+	{
+		this->copy(other.Root);
 	}
 	~Tree()
 	{
@@ -80,7 +136,7 @@ public:
 	void show()const
 	{
 		show(this->Root);
-		cout << "size >> " << this->size;
+		cout << "size >> " << this->size << endl;
 	}
 	Leaf<T>* binary_search(T Data) { return binary_search(Data, Root); }
 	
@@ -105,8 +161,8 @@ private:
 	{	
 		if (it) 
 		{
-			cout << it->Data << "\t";	
 			show(it->pLeft);
+			cout << it->Data << "\t";	
 			show(it->pRight);
 		}	  
 	}
@@ -122,6 +178,17 @@ private:
 		{
 			if (it->pLeft) plant_leaf(Data, it->pLeft);
 			else it->pLeft = new Leaf<T>(Data);
+		}
+	}
+
+
+	void copy(Leaf<T>*it)
+	{
+		if (it)
+		{
+			this->plant_leaf(it->Data);
+			copy(it->pLeft);
+			copy(it->pRight);
 		}
 	}
 };

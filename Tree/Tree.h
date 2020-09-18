@@ -12,17 +12,17 @@ template<class T>class Leaf;
 
 template<class T>class Tree
 {
-#define PRINT_ITERATOR
-#define PRINT_TREE
+//#define PRINT_ITERATOR
+//#define PRINT_TREE
 #define PRINT_LEAF
 
 
-	template<class T>class Leaf
+	class Leaf
 	{
 		template<class T> friend class Tree;
 		T Data;
-		Leaf<T>*pLeft;
-		Leaf<T>*pRight;
+		Leaf*pLeft;
+		Leaf*pRight;
 
 	public:
 
@@ -40,54 +40,56 @@ template<class T>class Tree
 #endif // PRINT_LEAF
 		}
 
+
+
 	};
-	Leaf<T>* Root;
+	Leaf* Root;
 	size_t size;
 
 public:
 
-	class iterator
-	{
-
-		Leaf<T>* it;
-
-	public:
-
-		iterator(Leaf<T>* it = nullptr): it(it)
-		{
-#ifdef PRINT_ITERATOR
-			cout << "ItConstructor >> \t" << this << endl;
-#endif // PRINT_ITERATOR
-		}
-
-		~iterator()
-		{
-#ifdef PRINT_ITERATOR
-			cout << "ItDestructo >> \t" << this << endl;
-#endif // PRINT_ITERATOR
-
-		}
-
-		operator bool()
-		{
-			return it;
-		}
-
-		iterator operator++()
-		{
-			if (it->pLeft)
-			{
-				return this->it->pLeft;
-			}
-			else if (it->pRight)
-			{
-				return this->it->pRight;
-			}
-			return this->it;
-		}
-
-
-	};
+//	class iterator
+//	{
+//
+//		Leaf* it;
+//
+//	public:
+//
+//		iterator(Leaf* it = nullptr): it(it)
+//		{
+//#ifdef PRINT_ITERATOR
+//			cout << "ItConstructor >> \t" << this << endl;
+//#endif // PRINT_ITERATOR
+//		}
+//
+//		~iterator()
+//		{
+//#ifdef PRINT_ITERATOR
+//			cout << "ItDestructo >> \t" << this << endl;
+//#endif // PRINT_ITERATOR
+//
+//		}
+//
+//		operator bool()
+//		{
+//			return it;
+//		}
+//
+//		iterator operator++()
+//		{
+//			if (it->pLeft)
+//			{
+//				return this->it->pLeft;
+//			}
+//			else if (it->pRight)
+//			{
+//				return this->it->pRight;
+//			}
+//			return this->it;
+//		}
+//
+//
+//	};
 
 	Tree()
 	{
@@ -101,7 +103,7 @@ public:
 
 	Tree(const std::initializer_list<T>& list): Tree()
 	{
-		for (const auto i : list)
+		for (const auto& i : list)
 		{
 			plant_leaf(i);
 		}
@@ -116,7 +118,7 @@ public:
 		cout << "TFelling >> \t" << this;
 	}
 
-	void destroy_tree(Leaf<T>* it)
+	void destroy_tree(Leaf* it)
 	{
 		if (it)
 		{
@@ -128,7 +130,7 @@ public:
 
 	void plant_leaf(T Data)		// Push_back(front) (*-*)
 	{
-		if (!size) this->Root = new Leaf<T>(Data);
+		if (!size) this->Root = new Leaf(Data);
 		else this->plant_leaf(Data, Root);
 		size++;
 	}
@@ -138,26 +140,150 @@ public:
 		show(this->Root);
 		cout << "size >> " << this->size << endl;
 	}
-	Leaf<T>* binary_search(T Data) { return binary_search(Data, Root); }
+
+	Leaf* binary_search(T Data) { return binary_search(Data, Root); }
+
+	T max(Leaf* it)
+	{
+		
+		for (; it->pRight; it = it->pRight);
+		//return Root ? 
+
+		return it->Data;
+	}
+	T min(Leaf* it)
+	{
+		for ( ; it->pLeft; it = it->pLeft);
+		return it->Data;
+	}
+	T sum()
+	{
+		if (!size)return NULL;
+		return sum(this->Root);
+	}
+
+	size_t Size()
+	{
+		return Size(this->Root);
+	}
+	/*void erase(T Data)
+	{
+		erase(Data, this->Root);
+	}*/
+
+	void erase(T Data)
+	{
+		erase(Data, this->Root);
+	}
+
+		Leaf* get_root()const 
+		{
+			return this->Root; 
+		}
 	
 private:
 
-	Leaf<T>* binary_search(T Data, Leaf<T>* it)
+	void erase(T Data, Leaf* it)
 	{
-		counter++;
+
+		Leaf* to_delete = binary_search(Data, it);
+
+		if (to_delete->pLeft == to_delete->pRight)
+		{
+			Leaf* perent = parent(to_delete->Data, this->Root);
+			perent->pLeft ? perent->pLeft = nullptr : perent->pRight = nullptr;
+			delete to_delete;
+		}
+
+		else if (to_delete->pLeft && to_delete->pRight)
+		{
+			Leaf* new_Root = minL(to_delete->pRight);
+			to_delete->Data = new_Root->Data;
+			erase(to_delete->Data, to_delete->pRight);
+		}
+
+		else
+		{
+			Leaf* perent = this->parent(Data, this->Root);
+			Leaf* child = (to_delete->pLeft ? to_delete->pLeft : to_delete->pRight);
+			perent->pLeft == to_delete ? perent->pLeft = child : perent->pRight = child;
+			delete to_delete;
+
+		}
+	}
+
+	Leaf* minL(Leaf* it)
+	{
+		for (; it->pLeft; it = it->pLeft);
+		return it;
+	}
+
+
+
+	Leaf* parent(T Data, Leaf* it)
+	{
 		if (it)
 		{
-			if (Data ==it->Data) { cout << endl << "---------------"   << Data << "--------------" << endl; return it; }
+			if (Data == it->pRight->Data || Data == it->pLeft->Data) { return it; }
 
 			if (Data < it->Data) return binary_search(Data, it->pLeft);
 
 			else return binary_search(Data, it->pRight);
 		}
 		else return nullptr;
-		
 	}
 
-	void show(Leaf<T>* it)const // print()
+	/*Leaf* parent(Leaf* child  , Leaf* it)
+	{
+
+		    if (it) return nullptr;
+		
+			if (child == it->pRight || child == it->pLeft) { return it; }
+
+			  binary_search(child, it->pRight);
+			  binary_search(child, it->pLeft);
+	}*/
+	
+
+    Leaf* binary_search(T Data, Leaf* it)
+	{
+		if (it)
+		{
+			if (Data == it->Data) {return it;}
+
+			if (Data < it->Data) return binary_search(Data, it->pLeft);
+
+			else return binary_search(Data, it->pRight);
+		}
+		else return nullptr;	
+	}
+	Leaf* binary_search(Leaf* ref, Leaf* it)
+	{
+		if (it)
+		{
+			if (ref == it) {return it;}
+
+			binary_search(ref, it->pLeft);
+			binary_search(ref, it->pRight);		
+		}	
+	}
+
+	/*Leaf* binary_search(T Data, Leaf* it)
+	{
+		counter++;
+		if (it)
+		{
+			if (Data == it->pLeft->Data) {return it;}
+
+			if (Data < it->pRight->Data) return binary_search(Data, it->pLeft);
+
+			else return binary_search(Data, it->pRight);
+		}
+		else return nullptr;
+		
+	}*/
+
+	void show(Leaf* it)const // print()
 	{	
 		if (it) 
 		{
@@ -167,22 +293,21 @@ private:
 		}	  
 	}
 
-	void plant_leaf(T Data, Leaf<T>* it)
+	void plant_leaf(T Data, Leaf* it)
 	{
 		if (Data >= it->Data)
 		{
 			if (it->pRight) plant_leaf(Data, it->pRight);
-			else it->pRight = new Leaf<T>(Data);
+			else it->pRight = new Leaf(Data);
 		}
 		else if (Data < it->Data)
 		{
 			if (it->pLeft) plant_leaf(Data, it->pLeft);
-			else it->pLeft = new Leaf<T>(Data);
+			else it->pLeft = new Leaf(Data);
 		}
 	}
 
-
-	void copy(Leaf<T>*it)
+	void copy(Leaf* it)
 	{
 		if (it)
 		{
@@ -190,6 +315,19 @@ private:
 			copy(it->pLeft);
 			copy(it->pRight);
 		}
+	}
+
+	T sum(Leaf*	it)
+	{
+		if (!it) return 0;
+		if (it->Left == it->pRight)return it->Data;
+		return sum(it->pLeft) + sum(it->pRight) + it->Data;		
+	}
+	size_t Size(Leaf*it)
+	{
+		if (!it) return 0;
+		else if (it->pLeft == it->pRight)return 1;
+		return Size(it->pLeft) + Size(it->pRight) + 1;
 	}
 };
 

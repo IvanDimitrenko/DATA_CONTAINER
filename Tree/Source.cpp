@@ -15,12 +15,14 @@ void main()
 	//cout << "counter >> "  << counter ;
 	//cout << endl << counter << endl;
 
-	Tree<int> zd = {1,2,3,4,5,-1,-2,-3,-4,0,};
-	Tree<int> s(zd);
-	//Tree<int> s = { 1,2,3,4 };
+	Tree<int> zd = {10,15,20,13,25};/*{50,60,70,65,75,55,56};*/
+
+	//Tree<int> s(zd);
 	
-	s.show();
-	cout << endl;
+	zd.erase(15);
+
 	zd.show();
+
+
 
 }

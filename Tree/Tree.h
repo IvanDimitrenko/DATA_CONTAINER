@@ -39,57 +39,11 @@ template<class T>class Tree
 			cout << "LFallOff >> \t" << this << endl;
 #endif // PRINT_LEAF
 		}
-
-
-
 	};
 	Leaf* Root;
 	size_t size;
 
 public:
-
-//	class iterator
-//	{
-//
-//		Leaf* it;
-//
-//	public:
-//
-//		iterator(Leaf* it = nullptr): it(it)
-//		{
-//#ifdef PRINT_ITERATOR
-//			cout << "ItConstructor >> \t" << this << endl;
-//#endif // PRINT_ITERATOR
-//		}
-//
-//		~iterator()
-//		{
-//#ifdef PRINT_ITERATOR
-//			cout << "ItDestructo >> \t" << this << endl;
-//#endif // PRINT_ITERATOR
-//
-//		}
-//
-//		operator bool()
-//		{
-//			return it;
-//		}
-//
-//		iterator operator++()
-//		{
-//			if (it->pLeft)
-//			{
-//				return this->it->pLeft;
-//			}
-//			else if (it->pRight)
-//			{
-//				return this->it->pRight;
-//			}
-//			return this->it;
-//		}
-//
-//
-//	};
 
 	Tree()
 	{
@@ -100,7 +54,6 @@ public:
 #endif // PRINT_TREE
 
 	}
-
 	Tree(const std::initializer_list<T>& list): Tree()
 	{
 		for (const auto& i : list)
@@ -112,6 +65,17 @@ public:
 	{
 		this->copy(other.Root);
 	}
+	Tree& operator = (const Tree& other)
+	{
+		if (this != &other)
+		{
+			this->destroy_tree(this->Root);
+			this->copy(other.Root);
+		}
+		return *this;
+	}
+
+
 	~Tree()
 	{
 		destroy_tree(Root);
@@ -151,11 +115,13 @@ public:
 
 		return it->Data;
 	}
+
 	T min(Leaf* it)
 	{
 		for ( ; it->pLeft; it = it->pLeft);
 		return it->Data;
 	}
+
 	T sum()
 	{
 		if (!size)return NULL;
@@ -166,86 +132,59 @@ public:
 	{
 		return Size(this->Root);
 	}
-	/*void erase(T Data)
-	{
-		erase(Data, this->Root);
-	}*/
 
 	void erase(T Data)
 	{
-		erase(Data, this->Root);
+		erase(binary_search(Data));
+		this->size--;
 	}
 
-		Leaf* get_root()const 
-		{
-			return this->Root; 
-		}
-	
 private:
 
-	void erase(T Data, Leaf* it)
+	void erase(Leaf* &to_delete)
 	{
-
-		Leaf* to_delete = binary_search(Data, it);
-
 		if (to_delete->pLeft == to_delete->pRight)
 		{
-			Leaf* perent = parent(to_delete->Data, this->Root);
-			perent->pLeft ? perent->pLeft = nullptr : perent->pRight = nullptr;
 			delete to_delete;
+			to_delete = nullptr;
 		}
-
 		else if (to_delete->pLeft && to_delete->pRight)
 		{
 			Leaf* new_Root = minL(to_delete->pRight);
 			to_delete->Data = new_Root->Data;
-			erase(to_delete->Data, to_delete->pRight);
+			return erase(new_Root);
 		}
-
 		else
 		{
-			Leaf* perent = this->parent(Data, this->Root);
-			Leaf* child = (to_delete->pLeft ? to_delete->pLeft : to_delete->pRight);
-			perent->pLeft == to_delete ? perent->pLeft = child : perent->pRight = child;
+			if (to_delete == this->Root) this->Root = (to_delete->pLeft ? to_delete->pLeft : to_delete->pRight);		
+			else
+			{
+				Leaf* perent = this->parent(to_delete, this->Root);
+				(to_delete == perent->pLeft ? perent->pLeft : perent->pRight) = (to_delete->pLeft ? to_delete->pLeft : to_delete->pRight);
+				//Leaf* child = (to_delete->pLeft ? to_delete->pLeft : to_delete->pRight);
+				//perent->pLeft == to_delete ? perent->pLeft = child : perent->pRight = child;
+			}
 			delete to_delete;
-
 		}
 	}
 
-	Leaf* minL(Leaf* it)
+	Leaf* minL(Leaf* &it)
 	{
 		for (; it->pLeft; it = it->pLeft);
 		return it;
 	}
 
+	Leaf* parent(Leaf* child  , Leaf* it)
+	{	
+		if (it->pRight == child || it->pLeft == child) { return it; }
 
+		if(it->pRight) parent(child, it->pRight);
 
-	Leaf* parent(T Data, Leaf* it)
-	{
-		if (it)
-		{
-			if (Data == it->pRight->Data || Data == it->pLeft->Data) { return it; }
-
-			if (Data < it->Data) return binary_search(Data, it->pLeft);
-
-			else return binary_search(Data, it->pRight);
-		}
-		else return nullptr;
+		else if(it->pLeft)  parent(child, it->pLeft);
 	}
-
-	/*Leaf* parent(Leaf* child  , Leaf* it)
-	{
-
-		    if (it) return nullptr;
-		
-			if (child == it->pRight || child == it->pLeft) { return it; }
-
-			  binary_search(child, it->pRight);
-			  binary_search(child, it->pLeft);
-	}*/
 	
 
-    Leaf* binary_search(T Data, Leaf* it)
+    Leaf*& binary_search(T Data, Leaf* &it)
 	{
 		if (it)
 		{
@@ -257,31 +196,6 @@ private:
 		}
 		else return nullptr;	
 	}
-	Leaf* binary_search(Leaf* ref, Leaf* it)
-	{
-		if (it)
-		{
-			if (ref == it) {return it;}
-
-			binary_search(ref, it->pLeft);
-			binary_search(ref, it->pRight);		
-		}	
-	}
-
-	/*Leaf* binary_search(T Data, Leaf* it)
-	{
-		counter++;
-		if (it)
-		{
-			if (Data == it->pLeft->Data) {return it;}
-
-			if (Data < it->pRight->Data) return binary_search(Data, it->pLeft);
-
-			else return binary_search(Data, it->pRight);
-		}
-		else return nullptr;
-		
-	}*/
 
 	void show(Leaf* it)const // print()
 	{	
@@ -323,6 +237,7 @@ private:
 		if (it->Left == it->pRight)return it->Data;
 		return sum(it->pLeft) + sum(it->pRight) + it->Data;		
 	}
+
 	size_t Size(Leaf*it)
 	{
 		if (!it) return 0;
@@ -342,3 +257,48 @@ private:
 
 
 
+
+
+
+/*class iterator
+{
+
+	Leaf* it;
+
+public:
+
+	iterator(Leaf* it = nullptr): it(it)
+	{
+#ifdef PRINT_ITERATOR
+			cout << "ItConstructor >> \t" << this << endl;
+#endif // PRINT_ITERATOR
+		}
+
+		~iterator()
+		{
+#ifdef PRINT_ITERATOR
+			cout << "ItDestructo >> \t" << this << endl;
+#endif // PRINT_ITERATOR
+
+		}
+
+		operator bool()
+		{
+			return it;
+		}
+
+		iterator operator++()
+		{
+			if (it->pLeft)
+			{
+				return this->it->pLeft;
+			}
+			else if (it->pRight)
+			{
+				return this->it->pRight;
+			}
+			return this->it;
+		}
+
+
+	};*/
